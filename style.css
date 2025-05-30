@@ -1,4 +1,4 @@
-/* Reset and base styles */
+
 * {
   margin: 0; padding: 0; box-sizing: border-box;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -127,7 +127,6 @@ body, html {
   overflow: hidden;
 }
 
-/* Floating clouds */
 .cloud {
   position: absolute;
   background: #fff;
@@ -162,7 +161,6 @@ body, html {
   to { left: 110vw; }
 }
 
-/* Raindrops */
 .rain-drop {
   position: absolute;
   width: 2px;
@@ -185,7 +183,6 @@ body, html {
   }
 }
 
-/* Snowflakes */
 .snowflake {
   position: absolute;
   width: 8px;
@@ -208,8 +205,6 @@ body, html {
     opacity: 0;
   }
 }
-
-/* Scrollbar for forecast */
 .forecast::-webkit-scrollbar {
   height: 6px;
 }
