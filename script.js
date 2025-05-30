@@ -26,7 +26,6 @@ toggleTempBtn.addEventListener("click", () => {
   fetchWeatherByCoords(currentCityCoords.lat, currentCityCoords.lon);
 });
 
-// On load, try to fetch user location weather
 window.onload = () => {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(
@@ -97,7 +96,6 @@ function showWeather(data) {
 
   let displayTemp = currentTempUnit === "C" ? Math.round(tempC) + "°C" : Math.round(cToF(tempC)) + "°F";
 
-  // Update background and animations
   const background = chooseBackground(data.weather[0].main);
   document.body.style.background = background;
   setWeatherAnimation(data.weather[0].main);
@@ -158,13 +156,9 @@ function showForecast(daily) {
     `;
   }).join('');
 }
-
-// Convert Celsius to Fahrenheit
 function cToF(c) {
   return c * 9 / 5 + 32;
 }
-
-// Background gradient based on weather condition
 function chooseBackground(weather) {
   switch(weather.toLowerCase()) {
     case "clear": return "linear-gradient(to right, #fceabb, #f8b500)";
@@ -176,13 +170,9 @@ function chooseBackground(weather) {
     default: return "linear-gradient(to right, #74ebd5, #ACB6E5)";
   }
 }
-
-// Clear all weather animations
 function clearWeatherAnimations() {
   weatherAnimation.innerHTML = "";
 }
-
-// Create clouds animation
 function createClouds() {
   clearWeatherAnimations();
   for(let i=0; i<6; i++) {
@@ -198,8 +188,6 @@ function createClouds() {
     weatherAnimation.appendChild(cloud);
   }
 }
-
-// Create rain animation
 function createRain() {
   clearWeatherAnimations();
   for(let i=0; i<50; i++) {
@@ -212,8 +200,6 @@ function createRain() {
     weatherAnimation.appendChild(drop);
   }
 }
-
-// Create snow animation
 function createSnow() {
   clearWeatherAnimations();
   for(let i=0; i<40; i++) {
@@ -226,8 +212,6 @@ function createSnow() {
     weatherAnimation.appendChild(flake);
   }
 }
-
-// Set animations based on weather
 function setWeatherAnimation(weather) {
   const w = weather.toLowerCase();
   if(w === "clear") {
@@ -245,8 +229,6 @@ function setWeatherAnimation(weather) {
     clearWeatherAnimations();
   }
 }
-
-// Show local time & date for the city using timezone offset in seconds
 let timeInterval;
 
 function startLocalTime(timezoneOffset) {
