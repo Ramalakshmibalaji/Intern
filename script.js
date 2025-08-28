@@ -1,3 +1,4 @@
+
 const apiKey = "dac237a281a8316a40e748e4d132e6f2";
 const cityInput = document.getElementById("cityInput");
 const searchBtn = document.getElementById("searchBtn");
@@ -7,12 +8,11 @@ const forecastDiv = document.getElementById("forecast");
 const timeDateDiv = document.getElementById("timeDate");
 const weatherAnimation = document.getElementById("weatherAnimation");
 
-let currentTempUnit = "C"; // C or F
+let currentTempUnit = "C";
 let currentCityCoords = null;
 
-
 searchBtn.addEventListener("click", () => {
-  if(cityInput.value.trim() === "") {
+  if (cityInput.value.trim() === "") {
     alert("Please enter a city name");
     return;
   }
@@ -36,10 +36,7 @@ window.onload = () => {
         };
         fetchWeatherByCoords(currentCityCoords.lat, currentCityCoords.lon);
       },
-      () => {
-        // If denied, default city
-        fetchWeatherByCity("New York");
-      }
+      () => fetchWeatherByCity("New York")
     );
   } else {
     fetchWeatherByCity("New York");
@@ -47,7 +44,7 @@ window.onload = () => {
 };
 
 function fetchWeatherByCity(city) {
-  fetch(https//api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric)
+  fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`)
     .then(res => {
       if (!res.ok) throw new Error("City not found");
       return res.json();
@@ -59,17 +56,16 @@ function fetchWeatherByCity(city) {
       startLocalTime(data.timezone);
     })
     .catch(err => {
-      weatherInfo.innerHTML = <p>${err.message}</p>;
+      weatherInfo.innerHTML = `<p>${err.message}</p>`;
       forecastDiv.innerHTML = "";
       timeDateDiv.textContent = "";
       weatherAnimation.innerHTML = "";
-    })
-  )
+    });
 }
 
 function fetchWeatherByCoords(lat, lon) {
-  fetch(https,//api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric)
-    then(res => {
+  fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`)
+    .then(res => {
       if (!res.ok) throw new Error("Weather info not found");
       return res.json();
     })
@@ -79,12 +75,11 @@ function fetchWeatherByCoords(lat, lon) {
       startLocalTime(data.timezone);
     })
     .catch(err => {
-      weatherInfo.innerHTML = <p>${err.message}</p>;
+      weatherInfo.innerHTML = `<p>${err.message}</p>`;
       forecastDiv.innerHTML = "";
       timeDateDiv.textContent = "";
       weatherAnimation.innerHTML = "";
-    })
-  )
+    });
 }
 
 function showWeather(data) {
@@ -94,7 +89,10 @@ function showWeather(data) {
   const cityName = data.name;
   const country = data.sys.country;
 
-  let displayTemp = currentTempUnit === "C" ? Math.round(tempC) + "°C" : Math.round(cToF(tempC)) + "°F";
+  let displayTemp =
+    currentTempUnit === "C"
+      ? Math.round(tempC) + "°C"
+      : Math.round(cToF(tempC)) + "°F";
 
   const background = chooseBackground(data.weather[0].main);
   document.body.style.background = background;
@@ -107,16 +105,13 @@ function showWeather(data) {
     <h1>${displayTemp}</h1>
   `;
 }
-
 function fetchForecast(lat, lon) {
-  // OpenWeatherMap 5 day / 3 hour forecast endpoint
-  fetch(https,//api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric)
-    then(res => {
+  fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`)
+    .then(res => {
       if (!res.ok) throw new Error("Forecast not found");
       return res.json();
     })
     .then(data => {
-      // Extract one forecast per day at noon approx
       const daily = [];
       const now = new Date();
 
@@ -131,8 +126,7 @@ function fetchForecast(lat, lon) {
     })
     .catch(() => {
       forecastDiv.innerHTML = "<p>Forecast unavailable</p>";
-    })
-  )
+    });
 }
 
 function showForecast(daily) {
@@ -141,33 +135,45 @@ function showForecast(daily) {
     return;
   }
 
-  forecastDiv.innerHTML = daily.map(f => {
-    const date = new Date(f.dt * 1000);
-    const dayName = date.toLocaleDateString(undefined, { weekday: 'short' });
-    const icon = f.weather[0].icon;
-    const tempC = f.main.temp;
-    const temp = currentTempUnit === "C" ? Math.round(tempC) + "°" : Math.round(cToF(tempC)) + "°";
-    return `
-      <div class="forecast-day">
-        <div>${dayName}</div>
-        <img src="https://openweathermap.org/img/wn/${icon}@2x.png" alt="${f.weather[0].description}" />
-        <div>${temp}</div>
-      </div>
-    `;
-  }).join('');
+  forecastDiv.innerHTML = daily
+    .map(f => {
+      const date = new Date(f.dt * 1000);
+      const dayName = date.toLocaleDateString(undefined, { weekday: "short" });
+      const icon = f.weather[0].icon;
+      const tempC = f.main.temp;
+      const temp =
+        currentTempUnit === "C"
+          ? Math.round(tempC) + "°"
+          : Math.round(cToF(tempC)) + "°";
+      return `
+        <div class="forecast-day">
+          <div>${dayName}</div>
+          <img src="https://openweathermap.org/img/wn/${icon}@2x.png" alt="${f.weather[0].description}" />
+          <div>${temp}</div>
+        </div>
+      `;
+    })
+    .join("");
 }
+
 function cToF(c) {
-  return c * 9 / 5 + 32;
+  return (c * 9) / 5 + 32;
 }
 function chooseBackground(weather) {
-  switch(weather.toLowerCase()) {
-    case "clear": return "linear-gradient(to right, #fceabb, #f8b500)";
-    case "clouds": return "linear-gradient(to right, #bdc3c7, #2c3e50)";
+  switch (weather.toLowerCase()) {
+    case "clear":
+      return "linear-gradient(to right, #fceabb, #f8b500)";
+    case "clouds":
+      return "linear-gradient(to right, #bdc3c7, #2c3e50)";
     case "rain":
-    case "drizzle": return "linear-gradient(to right, #4ca1af, #c4e0e5)";
-    case "snow": return "linear-gradient(to right, #83a4d4, #b6fbff)";
-    case "thunderstorm": return "linear-gradient(to right, #373b44, #4286f4)";
-    default: return "linear-gradient(to right, #74ebd5, #ACB6E5)";
+    case "drizzle":
+      return "linear-gradient(to right, #4ca1af, #c4e0e5)";
+    case "snow":
+      return "linear-gradient(to right, #83a4d4, #b6fbff)";
+    case "thunderstorm":
+      return "linear-gradient(to right, #373b44, #4286f4)";
+    default:
+      return "linear-gradient(to right, #74ebd5, #ACB6E5)";
   }
 }
 function clearWeatherAnimations() {
@@ -175,46 +181,46 @@ function clearWeatherAnimations() {
 }
 function createClouds() {
   clearWeatherAnimations();
-  for(let i=0; i<6; i++) {
+  for (let i = 0; i < 6; i++) {
     const cloud = document.createElement("div");
     cloud.classList.add("cloud");
-    cloud.style.width = `${50 + Math.random()*50}px`;
-    cloud.style.height = `${30 + Math.random()*20}px`;
+    cloud.style.width = `${50 + Math.random() * 50}px`;
+    cloud.style.height = `${30 + Math.random() * 20}px`;
     cloud.style.top = `${Math.random() * 40}vh`;
-    cloud.style.left = `-${100 + Math.random()*200}px`;
-    cloud.style.animationDuration = `${30 + Math.random()*20}s`;
+    cloud.style.left = `-${100 + Math.random() * 200}px`;
+    cloud.style.animationDuration = `${30 + Math.random() * 20}s`;
     cloud.style.animationName = "cloudMove";
-    cloud.style.animationDelay = `${i*5}s`;
+    cloud.style.animationDelay = `${i * 5}s`;
     weatherAnimation.appendChild(cloud);
   }
 }
 function createRain() {
   clearWeatherAnimations();
-  for(let i=0; i<50; i++) {
+  for (let i = 0; i < 50; i++) {
     const drop = document.createElement("div");
     drop.classList.add("rain-drop");
     drop.style.left = `${Math.random() * 100}vw`;
-    drop.style.animationDuration = `${0.5 + Math.random()*0.7}s`;
-    drop.style.animationDelay = `${Math.random()*3}s`;
-    drop.style.top = `${-20 - Math.random()*100}px`;
+    drop.style.animationDuration = `${0.5 + Math.random() * 0.7}s`;
+    drop.style.animationDelay = `${Math.random() * 3}s`;
+    drop.style.top = `${-20 - Math.random() * 100}px`;
     weatherAnimation.appendChild(drop);
   }
 }
 function createSnow() {
   clearWeatherAnimations();
-  for(let i=0; i<40; i++) {
+  for (let i = 0; i < 40; i++) {
     const flake = document.createElement("div");
     flake.classList.add("snowflake");
     flake.style.left = `${Math.random() * 100}vw`;
-    flake.style.animationDuration = `${5 + Math.random()*5}s`;
-    flake.style.animationDelay = `${Math.random()*5}s`;
-    flake.style.top = `${-10 - Math.random()*50}px`;
+    flake.style.animationDuration = `${5 + Math.random() * 5}s`;
+    flake.style.animationDelay = `${Math.random() * 5}s`;
+    flake.style.top = `${-10 - Math.random() * 50}px`;
     weatherAnimation.appendChild(flake);
   }
 }
 function setWeatherAnimation(weather) {
   const w = weather.toLowerCase();
-  if(w === "clear") {
+  if (w === "clear") {
     clearWeatherAnimations();
   } else if (w === "clouds") {
     createClouds();
@@ -229,16 +235,28 @@ function setWeatherAnimation(weather) {
     clearWeatherAnimations();
   }
 }
-let timeInterval;
 
+let timeInterval;
 function startLocalTime(timezoneOffset) {
-  if(timeInterval) clearInterval(timeInterval);
+  if (timeInterval) clearInterval(timeInterval);
 
   function updateTime() {
-    const utc = new Date().getTime() + (new Date().getTimezoneOffset() * 60000);
-    const localTime = new Date(utc + (timezoneOffset * 1000));
-    const options = { weekday: 'long', hour: '2-digit', minute: '2-digit', hour12: true };
-    timeDateDiv.textContent = localTime.toLocaleDateString(undefined, {month: 'long', day: 'numeric'}) + ' | ' + localTime.toLocaleTimeString(undefined, options);
+    const utc =
+      new Date().getTime() + new Date().getTimezoneOffset() * 60000;
+    const localTime = new Date(utc + timezoneOffset * 1000);
+    const options = {
+      weekday: "long",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true
+    };
+    timeDateDiv.textContent =
+      localTime.toLocaleDateString(undefined, {
+        month: "long",
+        day: "numeric"
+      }) +
+      " | " +
+      localTime.toLocaleTimeString(undefined, options);
   }
   updateTime();
   timeInterval = setInterval(updateTime, 1000);
