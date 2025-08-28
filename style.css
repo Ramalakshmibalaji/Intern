@@ -1,6 +1,7 @@
-
 * {
-  margin: 0; padding: 0; box-sizing: border-box;
+  margin: 0; 
+  padding: 0; 
+  box-sizing: border-box;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
@@ -129,7 +130,6 @@ body, html {
 
 .cloud {
   position: absolute;
-  background: #fff;
   background: linear-gradient(to bottom, #fff 0%, #d4d4d4 100%);
   border-radius: 50%;
   opacity: 0.8;
@@ -205,6 +205,7 @@ body, html {
     opacity: 0;
   }
 }
+
 .forecast::-webkit-scrollbar {
   height: 6px;
 }
